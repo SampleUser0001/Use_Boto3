@@ -1,61 +1,20 @@
-# Template Python on Docker
+# Use Boto3
 
-## 使い方
+AWSをPythonから
+サンプルとしてAWS CodeCommitのブランチ間のマージが作成可能かを取得する。
 
-1. Dockerfileのimageを変更する。
-2. 必要に応じてDockerfileにpipを書く。
-3. 必要に応じてdocker-compose.ymlを修正する。
-4. 下記実行。
-    ``` sh
-    docker-compose build
-    docker-compose up
-    ```
+## 実行
 
-### 起動引数を渡したい場合
-
-1. docker-compose.ymlのpython serviceの名前を変更する。
-2. 下記実行。
-    ``` sh
-    docker-compose build
-    docker-compose run ${サービス名} ${起動引数}
-    ```
-
-### 依存モジュールの取得
-
-コンテナ内で```pip freeze```を実行する。  
-ファイルは```app/requirements/requirements.txt```に出力される。
-
-``` sh
-docker-compose build
-docker-compose -f docker-compose_getRequirements.yml up
-```
-
-### 非Dockerコンテナ環境で実行する
-
-作成済みのプログラムのパスについては意識している（ファイルの読み書きを行おうとしたときに、パスや権限が存在しないみたいなことは発生しない）想定。  
-
-1. 事前に依存モジュールを取得する。
-    - 取得したファイルは何らかの方法で保存しておく。
-2. 実行環境でcloneする。
-3. ```pip install -r app/requirements/requirements.txt```
-4. ```start.sh```を必要に応じて修正する。
-    - ```python```コマンドを```python3```コマンドに修正
-5. ```app/config/log_config.json```を修正する。
-    - 下記の```filename```を修正する。
-    ``` json
-      "fileHandler": {
-        "class": "logging.FileHandler",
-        "level": "DEBUG",
-        "formatter": "simple",
-        "filename": "/opt/app/log/app.log"  
-      }
-    ```
-    - AWS CloudShellだったら…
-    ``` json
-        "filename": "/home/cloudshell-user/Template_Python_on_Docker/app/log/app.log"  
-    ```
+1. ```app/src/sample.env```をコピーして、```app/src/.env```を作成する。
+2. ```app/src/.env```に設定値を記載。
+3. 下記実行。
+  ``` sh
+  docker-compose build
+  docker-compose up
+  ```
 
 ## 参考
 
-- [Qiita:Docker を使う（python のイメージで色々確認してみる）](https://qiita.com/landwarrior/items/fd918da9ebae20486b81)
-- [Future Tech Blog:仕事でPythonコンテナをデプロイする人向けのDockerfile (1): オールマイティ編](https://future-architect.github.io/articles/20200513/)
+- [Python boto3 でAWSを自在に操ろう ~入門編~:Qiita](https://qiita.com/kimihiro_n/items/f3ce86472152b2676004)
+- [AWS CodeCommit リポジトリのプルリクエストを表示する:AWS CodeCommit ユーザーガイド](https://docs.aws.amazon.com/ja_jp/codecommit/latest/userguide/how-to-view-pull-request.html#get-merge-conflicts)
+- [Boto3公式のget_merge_conflictsメソッド](https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/codecommit.html#CodeCommit.Client.get_merge_conflicts)
