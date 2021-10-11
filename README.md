@@ -1,6 +1,6 @@
 # Use Boto3
 
-AWSをPythonから
+AWSをPythonから実行する。  
 サンプルとしてAWS CodeCommitのブランチ間のマージが作成可能かを取得する。
 
 ## 実行
